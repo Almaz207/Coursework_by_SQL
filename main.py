@@ -1,5 +1,3 @@
-import requests
-import psycopg2
 from work_with_vacancy import JodHandler
 from connection_by_api import HHintegration
 from work_with_DataBase import DataBase
@@ -8,11 +6,11 @@ from DBclass import DBManager
 hh_url = "https://api.hh.ru/vacancies"
 employer_id = ['8550', '241845', '3095', '78638', '665470', '154832', '1440117', '1440117']
 conn_params = {'database': 'vacancyfromhhru',
-                   'user': 'postgres',
-                   'password': '234567',
-                   'host': 'localhost',
-                   }
-if __name__== '__main__':
+               'user': 'postgres',
+               'password': '234567',
+               'host': 'localhost',
+               }
+if __name__ == '__main__':
     print("Привет, давай посмотрим вакансии интересных тебе компаний")
     DataBase().cerate_database()
     for i in range(4):
@@ -40,14 +38,14 @@ if __name__== '__main__':
             num = 1
             for i in answer:
                 print(f"{num} - {i}")
-                num +=1
+                num += 1
         elif user_input == "3":
             print("Cредняя зарплата по вакансиям:")
             answer = DBManager(conn_params).get_avg_salary()
             print(round(answer))
         elif user_input == "4":
-            print(
-                "Список всех вакансий, у которых зарплата выше средней по всем вакансиям. Компания, должность, зарплата от, зарплата до, ссылка на вакансию(учитывается только зарплата в рублях):")
+            print("Список всех вакансий, у которых зарплата выше средней по всем вакансиям. "
+                  "Компания, должность, зарплата от, зарплата до, ссылка на вакансию:")
             answer = DBManager(conn_params).get_vacancies_with_higher_salary()
             for i in answer:
                 print(i)

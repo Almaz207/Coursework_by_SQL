@@ -10,9 +10,9 @@ class HHintegration:
         self.url = url
         self.employer_id = employer_id
         self.page = page
+
     def request_vacancy(self):
         """Метод для выполнения запроса. При инициализации передаётся список вакансий"""
-
 
         params_request = {
             'employer_id': self.employer_id,
@@ -23,9 +23,3 @@ class HHintegration:
 
         response = requests.get(url=self.url, params=params_request)
         return response.json()
-
-# for i in range(10):
-#     print(i)
-#     random_requests = HHintegration(hh_url, employers_id,i).request_vacancy()
-#     print(random_requests)
-#     print(random_requests['items'])
