@@ -14,9 +14,10 @@ conn_params = {'database': 'vacancyfromhhru',
                    }
 if __name__== '__main__':
     print("Привет, давай посмотрим вакансии интересных тебе компаний")
-    for i in range(2):
+    DataBase().cerate_database()
+    for i in range(4):
         list_vacancy = JodHandler().rewrite_vacancys(HHintegration(hh_url, employer_id, i).request_vacancy())
-    DataBase(list_vacancy).write_data()
+        DataBase().write_data(list_vacancy)
     print("""Я могу:
     1 -показать список всех компаний и количество вакансий у каждой компании
     2 -показать список всех вакансий с указанием названия компании, названия вакансии и зарплаты и ссылки на вакансию
@@ -36,10 +37,12 @@ if __name__== '__main__':
         elif user_input == "2":
             answer = DBManager(conn_params).get_all_vacancies()
             print("Cписок всех вакансий с указанием названия компании, вакансии, зарплаты и ссылки на вакансию:")
+            num = 1
             for i in answer:
-                print(i)
+                print(f"{num} - {i}")
+                num +=1
         elif user_input == "3":
-            print("Cредняя зарплата по вакансиям (учитывается только зарплата в рублях):")
+            print("Cредняя зарплата по вакансиям:")
             answer = DBManager(conn_params).get_avg_salary()
             print(round(answer))
         elif user_input == "4":

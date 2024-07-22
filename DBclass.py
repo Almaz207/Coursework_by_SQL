@@ -74,5 +74,3 @@ conn_params = {'database': 'vacancyfromhhru',
                    'password': '234567',
                    'host': 'localhost',
                    }
-# DB_request = DBManager(conn_params).get_vacancies_with_keyword('')
-# print(DB_request)

@@ -14,8 +14,8 @@ class DataBase:
                    'password': '234567',
                    'host': 'localhost',
                    }
-    def __init__(self,list_vacancy):
-        self.list_vacancy = list_vacancy
+    def cerate_database(self):
+
         with psycopg2.connect(**DataBase.conn_params) as conn:
             with conn.cursor() as cur:
                 cur.execute("DROP TABLE vacancy_information")
@@ -35,10 +35,10 @@ class DataBase:
                 );"""
                 cur.execute(create_table)
         conn.close()
-    def write_data(self):
+    def write_data(self,list_vacancy):
         with psycopg2.connect(**DataBase.conn_params) as conn:
             with conn.cursor() as cur:
-                for i in self.list_vacancy:
+                for i in list_vacancy:
                     vacancy_to_db = (
                     int(i['id']), str(i['name']), i['area'], int(i['salary_from']), int(i['salary_to']),
                     int(i['employer_id']), i['employer_name'], i['experience'], i['requirement'],
@@ -52,47 +52,4 @@ class DataBase:
 
 
 
-# conn_params = {'database': 'vacancyfromhhru',
-#                'user': 'postgres',
-#                'password': '234567',
-#                'host': 'localhost',
-#                }
-#
-# with psycopg2.connect(**conn_params) as conn:
-#     with conn.cursor() as cur:
-#         create_table = """CREATE TABLE vacancy_information
-#         (
-#                 id_vacancy int PRIMARY KEY,
-#                 name text NOT NULL,
-#                 area text,
-#                 salary_from int,
-#                 salary_to int,
-#                 employer_id int,
-#                 employer_name text,
-#                 experience text,
-#                 requirement text,
-#                 responsibility text,
-#                 alternate_url text
-#         );"""
-#
-#         # cur.execute(create_table)
-#
-#         # for i in jobsi:
-            # print(1)
-            # print(i)
-            # vacancy_to_db = (int(i['id']), str(i['name']), i['area'], int(i['salary_from']), int(i['salary_to']),
-            #                  int(i['employer_id']), i['employer_name'], i['experience'], i['requirement'],
-            #                  i['responsibility'], i['alternate_url'])
-            # cur.execute(f"""INSERT INTO vacancy_information (id_vacancy, name, area, salary_from, salary_to,
-            # employer_id, employer_name, experience, requirement, responsibility, alternate_url)
-#             # VALUES {vacancy_to_db}""")
-#
-#         cur.execute("SELECT * FROM vacancy_information")
-#         rows = cur.fetchall()
-#
-# conn.close()
-# num = 0
-# for row in rows:
-#     print(num)
-#     print(row)
-#     num+=1
+
