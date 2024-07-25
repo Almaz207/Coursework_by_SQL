@@ -4,7 +4,7 @@ from work_with_DataBase import DataBase
 from DBclass import DBManager
 
 hh_url = "https://api.hh.ru/vacancies"
-employer_id = ['8550', '241845', '3095', '78638', '665470', '154832', '1440117', '1440117']
+employer_id = ['1272486', '3529', '154832', '665470', '139', '3754394', '817892', '241845', '3095', '8550', '1440117']
 conn_params = {'database': 'vacancyfromhhru',
                'user': 'postgres',
                'password': '234567',
@@ -12,10 +12,26 @@ conn_params = {'database': 'vacancyfromhhru',
                }
 if __name__ == '__main__':
     print("Привет, давай посмотрим вакансии интересных тебе компаний")
-    DataBase().cerate_database()
-    for i in range(4):
+    DataBase().employer_database()
+    DataBase().vacancy_database()
+
+    vacancy = []
+    list_record_employer = []
+    for i in range(6):
+        list_employer = JodHandler().writing_employer(HHintegration(hh_url, employer_id, i).request_vacancy())
+        list_record_employer.append(list_employer)
         list_vacancy = JodHandler().rewrite_vacancys(HHintegration(hh_url, employer_id, i).request_vacancy())
-        DataBase().write_data(list_vacancy)
+        vacancy.append(list_vacancy)
+
+    employers = []
+    for list_employers in list_record_employer:
+        for record in list_employers:
+            if (record not in employers) and (type(record) == dict):
+                employers.append(record)
+            else:
+                continue
+    DataBase().write_employer(employers)
+    DataBase().write_vacancy(vacancy)
     print("""Я могу:
     1 -показать список всех компаний и количество вакансий у каждой компании
     2 -показать список всех вакансий с указанием названия компании, названия вакансии и зарплаты и ссылки на вакансию

@@ -1,7 +1,7 @@
 import requests
 
 hh_url = "https://api.hh.ru/vacancies"
-employers_id = ['8550', '241845', '3095', '78638', '665470', '154832', '1440117', '1440117']
+employers_id = ['1272486', '3529', '154832', '665470', '139', '3754394', '817892', '241845', '3095', '8550', '1440117']
 
 
 class HHintegration:
@@ -22,4 +22,5 @@ class HHintegration:
         }
 
         response = requests.get(url=self.url, params=params_request)
+
         return response.json()

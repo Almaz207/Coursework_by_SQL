@@ -1,10 +1,9 @@
-class JodHandler:
 
+class JodHandler:
+    """Оба метода этого класса возвращают список словарей"""
     @staticmethod
     def rewrite_vacancys(requests):
         all_vacancy = []
-        test = 0
-        rewriting_vacancy = {}
         for record in requests['items']:
             rewriting_vacancy = {'id': record['id'], 'name': record['name'], 'area': record['area']['name'],
                                  'salary_from': record.get('salary'),
@@ -35,4 +34,22 @@ class JodHandler:
                 rewriting_vacancy['requirement']
 
             all_vacancy.append(rewriting_vacancy)
-        return all_vacancy
+        if len(all_vacancy) != 0:
+            return all_vacancy
+
+
+    @staticmethod
+    def writing_employer(requests):
+        all_employers = []
+        for record in requests['items']:
+            rewriting_employer = {'employer_id': record['employer']['id'],
+                                  'employer_name': record['employer']['name']}
+            if rewriting_employer not in all_employers:
+                all_employers.append(rewriting_employer)
+            else:
+                continue
+
+        if len(all_employers) !=0:
+            return all_employers
+        else:
+            return "Информация о работодателях обработана"
