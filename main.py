@@ -1,3 +1,4 @@
+import os
 from work_with_vacancy import JodHandler
 from connection_by_api import HHintegration
 from work_with_DataBase import DataBase
@@ -5,15 +6,33 @@ from DBclass import DBManager
 
 hh_url = "https://api.hh.ru/vacancies"
 employer_id = ['1272486', '3529', '154832', '665470', '139', '3754394', '817892', '241845', '3095', '8550', '1440117']
-conn_params = {'database': 'vacancyfromhhru',
-               'user': 'postgres',
-               'password': '234567',
-               'host': 'localhost',
-               }
+conn_params = {}
+if os.path.exists("../connect_db.txt"):
+    with open("../connect_db.txt", "r") as file:
+        for line in range(4):
+            key, value = file.readline().split(':')
+            for simbol in value:
+                value = value.replace('\n', '')
+            conn_params[key] = value
+else:
+    with open("../connect_db.txt", "w") as file:
+        database = str(input("Как называется база данных: "))
+        user = str(input("Имя пользователя: "))
+        password = str(input("Пароль пользователя: "))
+        host = str(input("Хост(если ваша БД находится на локальном устройстве введите:localhost): "))
+        conn_params['database'] = database
+        conn_params['user'] = user
+        conn_params['password'] = password
+        conn_params['host'] = host
+        file.write(f"""database:{database}
+user:{user}
+password:{password}
+host:{host}""")
+
 if __name__ == '__main__':
     print("Привет, давай посмотрим вакансии интересных тебе компаний")
-    DataBase().employer_database()
-    DataBase().vacancy_database()
+    DataBase().employer_database(conn_params)
+    DataBase().vacancy_database(conn_params)
 
     vacancy = []
     list_record_employer = []
@@ -26,12 +45,12 @@ if __name__ == '__main__':
     employers = []
     for list_employers in list_record_employer:
         for record in list_employers:
-            if (record not in employers) and (type(record) == dict):
+            if (record not in employers) and (type(record) is dict):
                 employers.append(record)
             else:
                 continue
-    DataBase().write_employer(employers)
-    DataBase().write_vacancy(vacancy)
+    DataBase().write_employer(employers, conn_params)
+    DataBase().write_vacancy(vacancy, conn_params)
     print("""Я могу:
     1 -показать список всех компаний и количество вакансий у каждой компании
     2 -показать список всех вакансий с указанием названия компании, названия вакансии и зарплаты и ссылки на вакансию
